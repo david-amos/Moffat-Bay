@@ -1,10 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="includes/header.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Moffat Bay - Registration</title>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 	<!-- Will route to doPost method in LodgeServlet -->
