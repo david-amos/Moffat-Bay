@@ -12,6 +12,12 @@
 <div style="margin-left: 10%; margin-right: 10%; margin-bottom: 10%; border: 2px solid grey; background-color: #fff;">
 	<h3>Guest Registration</h3>
 	<hr>
+	<% String error = (String)request.getAttribute("registrationError");
+	if (error != null){
+		
+		%>
+		<p style="color: red;"> <%= error %></p>
+		<% } %>
 	<!-- Will route to doPost method in LodgeServlet -->
 	<form method="POST" action="LodgeServlet">
 		<table style="margin: 5%">
@@ -25,7 +31,7 @@
 		<tr><td><label>Email Address</label></td></tr>
 		<tr><td colspan="2"><input type="email" name ="userEmail" required></td></tr>
 		<tr><td><label>Date of Birth</label></td></tr>
-		<tr><td colspan="2"><input type="date" name ="birthDate" required></td></tr>
+		<tr><td colspan="2"><input type="date" name ="birthDate" value="2000-01-01" required></td></tr>
 		<tr><td><label>Phone Number</label></td></tr>
 		<tr><td colspan="2"><input type="tel" name ="phoneNumber" placeholder="123-456-7890" pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}" required></td></tr>
 		<tr><td colspan="2"><p>Password must be least 8 characters in length and include one number, one upper-case and one lower-case letter</p></td></tr>
