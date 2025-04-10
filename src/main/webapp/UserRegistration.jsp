@@ -6,10 +6,10 @@
 <meta charset="UTF-8">
 <title>Moffat Bay - Registration</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="/Moffat-Bay/css/style.css">
 </head>
 <body>
-<div style="margin: 10%; border: 2px solid grey;">
+<div style="margin-left: 10%; margin-right: 10%; margin-bottom: 10%; border: 2px solid grey; background-color: #fff;">
 	<h3>Guest Registration</h3>
 	<hr>
 	<!-- Will route to doPost method in LodgeServlet -->
@@ -27,7 +27,7 @@
 		<tr><td><label>Date of Birth</label></td></tr>
 		<tr><td colspan="2"><input type="date" name ="birthDate" required></td></tr>
 		<tr><td><label>Phone Number</label></td></tr>
-		<tr><td colspan="2"><input type="tel" name ="phoneNumber" placeholder="123-45-678" pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}" required></td></tr>
+		<tr><td colspan="2"><input type="tel" name ="phoneNumber" placeholder="123-456-7890" pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}" required></td></tr>
 		<tr><td colspan="2"><p>Password must be least 8 characters in length and include one number, one upper-case and one lower-case letter</p></td></tr>
 		<tr><td><label>Password</label></td></tr>
 		<tr><td colspan="2"><input type="password" name="password" required></td></tr>
