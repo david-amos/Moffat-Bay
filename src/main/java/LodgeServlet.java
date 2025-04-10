@@ -15,12 +15,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 /**
  * Servlet implementation class LodgeServlet
  */
 @WebServlet("/LodgeServlet")
 public class LodgeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String STATIC_KEY = "F45gK0ieu7o2UBB3";
+	private static final String ALGORITHM = "AES";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -62,9 +67,11 @@ public class LodgeServlet extends HttpServlet {
 					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "test_user", "testPW");
 		            Statement statement = connection.createStatement();
 		            String query = "INSERT INTO TESTMOFFATBAYDB.USER VALUES ('"+userEmail+"','"+firstName+"','"+
-		            lastName+"','"+phoneNumber+"','"+birthDate+"','"+password+"');";
-		            statement.executeUpdate(query);
+		            lastName+"','"+phoneNumber+"','"+birthDate+"','"+encryptPass(password)+"');";
+		            int sqlCode = statement.executeUpdate(query);
+		            if (sqlCode != 1){ throw new Exception("SQL error");}
 		            log("User Inserted");
+		            
 		            session.setAttribute("User", userEmail);
 		            ServletContext sc = getServletContext();
 		            // reroute to landing when logged in
@@ -72,11 +79,33 @@ public class LodgeServlet extends HttpServlet {
 			        rd.forward(request, response);
 				}
 				catch(Exception e){
-					
+					request.setAttribute("registrationError", "Something went wrong");
+					ServletContext sc = getServletContext();
+					RequestDispatcher rd = sc.getRequestDispatcher("/UserRegistration.jsp");
+					log("Something went wrong");
+			        rd.forward(request, response);
 				}
 			}
 		}
+		// other post requests like login here
 		doGet(request, response);
 	}
+	
+	// Encryption and decryption made with the help of Google AI Overview
+	private static String encryptPass(String pass) throws Exception {
+        SecretKeySpec key = new SecretKeySpec(STATIC_KEY.getBytes("UTF-8"), ALGORITHM);
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encryptedBytes = cipher.doFinal(pass.getBytes("UTF-8"));
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+	private static String decryptPass(String encryptedPass) throws Exception {
+        SecretKeySpec key = new SecretKeySpec(STATIC_KEY.getBytes("UTF-8"), ALGORITHM);
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decodedBytes = Base64.getDecoder().decode(encryptedPass);
+        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+        return new String(decryptedBytes, "UTF-8");
+    }
 
 }
