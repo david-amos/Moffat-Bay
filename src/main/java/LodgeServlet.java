@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import javax.crypto.Cipher;
@@ -62,14 +63,27 @@ public class LodgeServlet extends HttpServlet {
 				String birthDate = request.getParameter("birthDate");
 				String phoneNumber = request.getParameter("phoneNumber");
 				String password = request.getParameter("password");
+				String confirmPassword = request.getParameter("confirmPassword");
+				String error = null;
 				try {
+					if (!password.equals(confirmPassword)) {
+						error = "Passwords do not match";
+						throw new Exception("Passwords do not match");
+					}
+					if (!password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")) {
+						error="Password does not meet requierments";
+						throw new Exception("Password does not meet requierments");
+					}
 					Connection connection = null;
 					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "test_user", "testPW");
 		            Statement statement = connection.createStatement();
 		            String query = "INSERT INTO TESTMOFFATBAYDB.USER VALUES ('"+userEmail+"','"+firstName+"','"+
 		            lastName+"','"+phoneNumber+"','"+birthDate+"','"+encryptPass(password)+"');";
 		            int sqlCode = statement.executeUpdate(query);
-		            if (sqlCode != 1){ throw new Exception("SQL error");}
+		            if (sqlCode != 1){ 
+		            	error = "An account already exists for this email";
+		            	throw new Exception("SQL error");
+		            }
 		            log("User Inserted");
 		            
 		            session.setAttribute("User", userEmail);
@@ -79,7 +93,13 @@ public class LodgeServlet extends HttpServlet {
 			        rd.forward(request, response);
 				}
 				catch(Exception e){
-					request.setAttribute("registrationError", "Something went wrong");
+					if (e.getMessage().startsWith("Duplicate")) { 
+						error = "An account already exists for this email";
+					}
+					else if (error == null){
+						error = "Something went wrong";
+					}
+					request.setAttribute("registrationError", error);
 					ServletContext sc = getServletContext();
 					RequestDispatcher rd = sc.getRequestDispatcher("/UserRegistration.jsp");
 					log("Something went wrong");
