@@ -9,7 +9,7 @@
 <body>
 
   <div class="hero-image">
-    <img src="images/lodge.jpg" alt="Lodge at Moffat Bay" style="width:100%; max-height:400px;">
+    <img src="images/MoffatBayLodge.png" alt="Lodge at Moffat Bay" style="width:100%; max-height:400px;">
     <h1 class="hero-text">Discover Tranquility</h1>
   </div>
 
