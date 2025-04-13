@@ -3,7 +3,6 @@
   <nav style="text-align: center; margin-top: 10px;">
     <a href="Login.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Login</a>
     <a href="Landing.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Home</a>
-    <a href="About.jsp" style="margin: 0 10px; color: white; text-decoration: none;">About Us</a>
     <a href="Attractions.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Attractions</a>
     <a href="Contact.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Contact Us</a>
     <a href="UserRegistration.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Register</a>
