@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -10,32 +8,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
-/**
- * Servlet implementation class LodgeServlet
- */
+
 @WebServlet("/LodgeServlet")
 public class LodgeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String STATIC_KEY = "F45gK0ieu7o2UBB3";
 	private static final String ALGORITHM = "AES";
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LodgeServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
     public void init() {
         try {
@@ -49,16 +37,14 @@ public class LodgeServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	public LodgeServlet() {
+		super();
+	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		log("in doPost");
 		HttpSession session = request.getSession(true);
 		String submitValue = request.getParameter("submit");
@@ -102,20 +88,18 @@ public class LodgeServlet extends HttpServlet {
 		            // reroute to landing when logged in
 			        RequestDispatcher rd = sc.getRequestDispatcher("/Landing.jsp");
 			        rd.forward(request, response);
+
+			} catch (Exception e) {
+				if (e.getMessage().startsWith("Duplicate")) {
+					error = "An account already exists for this email";
+				} else if (error == null) {
+					error = "Something went wrong";
 				}
-				catch(Exception e){
-					if (e.getMessage().startsWith("Duplicate")) { 
-						error = "An account already exists for this email";
-					}
-					else if (error == null){
-						error = "Something went wrong";
-					}
-					request.setAttribute("registrationError", error);
-					ServletContext sc = getServletContext();
-					RequestDispatcher rd = sc.getRequestDispatcher("/UserRegistration.jsp");
-					log("Something went wrong");
-			        rd.forward(request, response);
-				}
+				request.setAttribute("registrationError", error);
+				ServletContext sc = getServletContext();
+				RequestDispatcher rd = sc.getRequestDispatcher("/UserRegistration.jsp");
+				log("Something went wrong");
+				rd.forward(request, response);
 			}
 		}
 		// other post requests like login here
@@ -162,22 +146,12 @@ public class LodgeServlet extends HttpServlet {
 			}
 		}		
 	}
-	
-	// Encryption and decryption made with the help of Google AI Overview
-	private static String encryptPass(String pass) throws Exception {
-        SecretKeySpec key = new SecretKeySpec(STATIC_KEY.getBytes("UTF-8"), ALGORITHM);
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encryptedBytes = cipher.doFinal(pass.getBytes("UTF-8"));
-        return Base64.getEncoder().encodeToString(encryptedBytes);
-    }
-	private static String decryptPass(String encryptedPass) throws Exception {
-        SecretKeySpec key = new SecretKeySpec(STATIC_KEY.getBytes("UTF-8"), ALGORITHM);
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decodedBytes = Base64.getDecoder().decode(encryptedPass);
-        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-        return new String(decryptedBytes, "UTF-8");
-    }
 
+	private static String encryptPass(String pass) throws Exception {
+		SecretKeySpec key = new SecretKeySpec(STATIC_KEY.getBytes("UTF-8"), ALGORITHM);
+		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+		byte[] encryptedBytes = cipher.doFinal(pass.getBytes("UTF-8"));
+		return Base64.getEncoder().encodeToString(encryptedBytes);
+	}
 }
