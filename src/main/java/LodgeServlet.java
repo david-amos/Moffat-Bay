@@ -102,6 +102,7 @@ public class LodgeServlet extends HttpServlet {
 				rd.forward(request, response);
 			}
 		}
+		}
 		// other post requests like login here
 		//doGet(request, response);
 		if (submitValue != null) {
