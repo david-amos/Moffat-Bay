@@ -62,3 +62,33 @@
     object-fit: cover;
     border-radius: 8px;
   }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #014421;
+    color: white;
+    padding: 30px 40px;
+    font-size: 14px;
+    flex-wrap: wrap;
+  }
+  
+  .footer-item {
+    flex: 1;
+    margin: 10px;
+    min-width: 250px;
+  }
+  
+  .footer h4 {
+    margin-bottom: 10px;
+  }
+  
+  .hours {
+    margin-top: 5px;
+    padding: 4px 8px;
+    background-color: #014421;
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 13px;
+  }
