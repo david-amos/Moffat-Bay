@@ -53,5 +53,24 @@
     <img src="images/whale-watching.png" alt="Whale watching" class="gallery-img">
   </div>
 
+  <!-- Contact Us Section -->
+   <!-- Footer Section -->
+  <footer class="footer">
+    <div class="footer-item">
+        <h4>CALL US</h4>
+        <p>516-595-5000</p>
+        <div class="hours">Mon–Sun: 8:00 AM – 6:00 PM PST</div>
+    </div>
+  
+    <div class="footer-item">
+      <h4>HERE'S OUR ADDRESS, PLEASE MAKE SURE TO STOP BY!</h4>
+      <p>Moffat Bay Lodge<br>101 Bayview Trail<br>Joviedsa Island, WA 98261</p>
+    </div>
+  
+    <div class="footer-item">
+      <h4>SEND US AN E-MAIL</h4>
+      <p>info@moffatbaylodge.com</p>
+    </div>
+  </footer>
 </body>
 </html>
