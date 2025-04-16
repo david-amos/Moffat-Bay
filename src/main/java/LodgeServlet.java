@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import beans.User;
 import beans.Reservation;
+import beans.Room;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,20 +19,28 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Date;
-
+/* Moffat Bay Lodge Servlet
+ * Team Charlie: David Amos, Scott Cacal, Caitlan Nichols, Alexander Zayas 
+ * This file controls the backend code of the application
+ * The doPost method controls the actions on a form submission
+ * 
+ */
 @WebServlet("/LodgeServlet")
 public class LodgeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String STATIC_KEY = "F45gK0ieu7o2UBB3";
 	private static final String ALGORITHM = "AES";
 
+	//executed on application startup
     public void init() {
+    	//register the jdbc driver
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         }
@@ -48,8 +57,12 @@ public class LodgeServlet extends HttpServlet {
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		ServletContext sc = getServletContext();
+        // reroute to landing when at first load
+        RequestDispatcher rd = sc.getRequestDispatcher("/Landing.jsp");
+        rd.forward(request, response);
 	}
-
+	// handle form submissions
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log("in doPost");
 		HttpSession session = request.getSession(true);
@@ -116,8 +129,6 @@ public class LodgeServlet extends HttpServlet {
 			if (submitValue.equals("Sign in")){						
 				//A sign in request was submitted
 				log("sign in submit");
-				//String userEmail = request.getParameter("userEmail");
-				//String password = request.getParameter("password");
 				try {
 					String sql = "SELECT * FROM TESTMOFFATBAYDB.USER WHERE UserEmail=? AND Password=?";  //SQL
 					String userEmail = request.getParameter("userEmail");
@@ -177,14 +188,37 @@ public class LodgeServlet extends HttpServlet {
 						default:
 							throw new Exception("No room type selected");
 					}
-					LocalDateTime arrivalDateTime = LocalDateTime.parse(request.getParameter("arrivalDateTime"),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-					LocalDateTime departureDateTime = LocalDateTime.parse(request.getParameter("departureDateTime"),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-					User user = (User)session.getAttribute("User");
+					LocalDateTime arrivalDateTime = LocalDateTime.parse(request.getParameter("arrivalDateTime"),DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+					LocalDateTime departureDateTime = LocalDateTime.parse(request.getParameter("departureDateTime"),DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+					long daysDifference = ChronoUnit.DAYS.between(arrivalDateTime.toLocalDate(), departureDateTime.toLocalDate());
+					if (daysDifference < 1 ) {
+						throw new Exception("Departure date must be a least one day after arrival");
+					}
+					User user = (User)request.getSession().getAttribute("User");
 					int numAdults = Integer.parseInt(request.getParameter("numAdults"));
 					int numChildren = Integer.parseInt(request.getParameter("numChildren"));
 					Reservation reservation = new Reservation(user.getUserEmail(),request.getParameter("addressLine1"),request.getParameter("addresLine2"),request.getParameter("addressCity"),
 							request.getParameter("addressState"),request.getParameter("addressZip"),arrivalDateTime,departureDateTime,numAdults,numChildren, roomTypeID);
+					//store reservation info in session for the reservation summary page
 					session.setAttribute("Reservation", reservation);
+					String sql = "SELECT * FROM TESTMOFFATBAYDB.ROOM WHERE RoomTypeID =?";
+					Connection connection = null;  //mysql connection
+					PreparedStatement statement = null;   //mysql statement
+					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "test_user", "testPW");
+		            statement = connection.prepareStatement(sql,ResultSet.TYPE_SCROLL_SENSITIVE, 
+	                        ResultSet.CONCUR_UPDATABLE);
+		            statement.setString(1,roomTypeID+"");
+		            ResultSet rs = statement.executeQuery();
+		            rs.last();                              //move the cursor to the last row
+		            int numberOfRows = rs.getRow();         //get the number of rows
+		            rs.beforeFirst();                       //back to initial state
+		            if (numberOfRows > 0);
+		            	else { throw new Exception("SQL error");}
+		            log("User Signed In");
+		            rs.next();
+		            Room room = new Room(roomTypeID, rs.getString(2),rs.getDouble(3));
+		            //store room information in session for reservation summary page
+		            session.setAttribute("Room", room);
 					log("Reserve submitted, not yet confirmed");
 					ServletContext sc = getServletContext();
 					RequestDispatcher rd = sc.getRequestDispatcher("/ReservationSummary.jsp");
@@ -192,13 +226,13 @@ public class LodgeServlet extends HttpServlet {
 				}
 				catch(Exception e) {
 					log(e.getMessage());
-					request.setAttribute("reservationError", "Please try again");
+					request.setAttribute("reservationError", e.getMessage());
 					ServletContext sc = getServletContext();
 					RequestDispatcher rd = sc.getRequestDispatcher("/Reservations.jsp");
 					log("Something went wrong");
 			        rd.forward(request, response);
 				}
-				//to-do
+				
 			}
 		}
 		if (submitValue != null) {
@@ -209,7 +243,7 @@ public class LodgeServlet extends HttpServlet {
 			}
 		}
 	}
-
+	// encrypts a string value
 	private static String encryptPass(String pass) throws Exception {
 		SecretKeySpec key = new SecretKeySpec(STATIC_KEY.getBytes("UTF-8"), ALGORITHM);
 		Cipher cipher = Cipher.getInstance(ALGORITHM);

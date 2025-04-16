@@ -1,7 +1,11 @@
+<%-- Moffat Bay Header
+Team Charlie: David Amos, Scott Cacal, Caitlan Nichols, Alexander Zayas
+This will be used as a common header for jsp pages --%>
 <div style="background-color:#014421; padding: 10px; color: white;">
   <h2 style="text-align: center; margin: 0;">Moffat Bay Lodge</h2>
   <nav style="text-align: center; margin-top: 10px;">
-  	<%if (session.getAttribute("User") == null){ %>
+  	<% //change options based on login status
+  	if (session.getAttribute("User") == null){ %>
     <a href="Login.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Login</a>
     <%}else { %>
     <form><input type="submit"value="Logout" name="submit"></form>
