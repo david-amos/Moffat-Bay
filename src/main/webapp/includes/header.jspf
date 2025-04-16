@@ -1,12 +1,18 @@
 <div style="background-color:#014421; padding: 10px; color: white;">
   <h2 style="text-align: center; margin: 0;">Moffat Bay Lodge</h2>
   <nav style="text-align: center; margin-top: 10px;">
+  	<%if (session.getAttribute("User") == null){ %>
     <a href="Login.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Login</a>
+    <%}else { %>
+    <form><input type="submit"value="Logout" name="submit"></form>
+    <%} %>
     <a href="Landing.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Home</a>
     <a href="About.jsp" style="margin: 0 10px; color: white; text-decoration: none;">About Us</a>
     <a href="Attractions.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Attractions</a>
     <a href="UserRegistration.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Register</a>
+    <%if (session.getAttribute("User") != null){ %>
     <a href="Reservations.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Reservations</a>
     <a href="Lookup.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Look Up</a>
+    <%} %>
   </nav>
 </div>
