@@ -9,15 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.User;
+import beans.Reservation;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
+import java.util.Date;
 
 @WebServlet("/LodgeServlet")
 public class LodgeServlet extends HttpServlet {
@@ -82,8 +88,9 @@ public class LodgeServlet extends HttpServlet {
 		            	throw new Exception("SQL error");
 		            }
 		            log("User Inserted");
-		            
-		            session.setAttribute("User", userEmail);
+		            Date birthDateDate = new SimpleDateFormat("yyy-MM-dd").parse(birthDate);
+		            User user = new User(userEmail,firstName,lastName,phoneNumber,birthDateDate,encryptPass(password));
+		            session.setAttribute("User", user);
 		            ServletContext sc = getServletContext();
 		            // reroute to landing when logged in
 			        RequestDispatcher rd = sc.getRequestDispatcher("/Landing.jsp");
@@ -129,8 +136,9 @@ public class LodgeServlet extends HttpServlet {
 		            if (numberOfRows > 0);
 		            	else { throw new Exception("SQL error");}
 		            log("User Signed In");
-		            
-		            session.setAttribute("User", userEmail);
+		            rs.next();
+		            User user = new User(userEmail,rs.getString(2),rs.getString(3),rs.getString(4),rs.getDate(5),encryptPass(password));
+		            session.setAttribute("User", user);
 		            ServletContext sc = getServletContext();
 		            // reroute to landing when logged in
 			        RequestDispatcher rd = sc.getRequestDispatcher("/Landing.jsp");
@@ -145,7 +153,61 @@ public class LodgeServlet extends HttpServlet {
 			        rd.forward(request, response);
 				}		
 			}
-		}		
+		}
+		if (submitValue != null) {
+			if (submitValue.equals("Reserve")){	
+				try {
+					if (request.getSession().getAttribute("User") == null) {
+						throw new Exception("Please sign in before booking");
+					}
+					int roomTypeID;
+					switch(request.getParameter("roomType")){
+						case "Double Full":
+							roomTypeID = 1;
+							break;
+						case "Queen":
+							roomTypeID = 2;
+							break;
+						case "Double Queen":
+							roomTypeID = 3;
+							break;
+						case "King":
+							roomTypeID = 4;
+							break;
+						default:
+							throw new Exception("No room type selected");
+					}
+					LocalDateTime arrivalDateTime = LocalDateTime.parse(request.getParameter("arrivalDateTime"),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+					LocalDateTime departureDateTime = LocalDateTime.parse(request.getParameter("departureDateTime"),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+					User user = (User)session.getAttribute("User");
+					int numAdults = Integer.parseInt(request.getParameter("numAdults"));
+					int numChildren = Integer.parseInt(request.getParameter("numChildren"));
+					Reservation reservation = new Reservation(user.getUserEmail(),request.getParameter("addressLine1"),request.getParameter("addresLine2"),request.getParameter("addressCity"),
+							request.getParameter("addressState"),request.getParameter("addressZip"),arrivalDateTime,departureDateTime,numAdults,numChildren, roomTypeID);
+					session.setAttribute("Reservation", reservation);
+					log("Reserve submitted, not yet confirmed");
+					ServletContext sc = getServletContext();
+					RequestDispatcher rd = sc.getRequestDispatcher("/ReservationSummary.jsp");
+			        rd.forward(request, response);
+				}
+				catch(Exception e) {
+					log(e.getMessage());
+					request.setAttribute("reservationError", "Please try again");
+					ServletContext sc = getServletContext();
+					RequestDispatcher rd = sc.getRequestDispatcher("/Reservations.jsp");
+					log("Something went wrong");
+			        rd.forward(request, response);
+				}
+				//to-do
+			}
+		}
+		if (submitValue != null) {
+			if (submitValue.equals("Logout")){	
+				session.setAttribute("User",null);
+				ServletContext sc = getServletContext();
+				RequestDispatcher rd = sc.getRequestDispatcher("/Login.jsp");
+			}
+		}
 	}
 
 	private static String encryptPass(String pass) throws Exception {
