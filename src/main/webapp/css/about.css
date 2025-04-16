@@ -9,6 +9,9 @@
     flex: 1;
     padding-right: 20px;
     color: white;
+    background-color: rgba(1, 68, 33, 0.8);
+    font-weight: bold;
+    border-radius: 5px;
   }
   
   .hero-img-box {
