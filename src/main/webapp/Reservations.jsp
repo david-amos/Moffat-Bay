@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%-- Moffat Bay Lodge Reservation Page
+Team Charlie: David Amos, Scott Cacal, Caitlan Nichols, Alexander Zayas
+This is a jsp page to handle the display of the page --%>
 <%@ page import="beans.User" %>
 <meta charset="UTF-8">
 <title>Moffat Bay - Reservations</title>
@@ -18,8 +21,9 @@
 		
 		%>
 		<p style="color: red;"> <%= error %></p>
-		<% } 
-		User user = (User)request.getSession().getAttribute("User");%>
+		<% } //ensure the user is logged in to allow reservation, if user is present info can be used to pre-populate fields
+		User user = (User)request.getSession().getAttribute("User");
+		if(user != null){ %>
 		
 	<!-- Will route to doPost method in LodgeServlet -->
 	<form method="POST" action="LodgeServlet">
@@ -49,14 +53,16 @@
 		<td><input type="number" name ="numChildren" min="0" pattern="[0-9]*" required></td>
 		</tr>
 		<tr><td><label>Room Type</label></td></tr>
-		<tr><td colspan="2"><input type="radio" name="roomType" value = "Double Full"><label for="Double Full">Double Full</label>
+		<tr><td colspan="2"><input type="radio" name="roomType" value = "Double Full" checked><label for="Double Full">Double Full</label>
 			<input type="radio" name="roomType" value = "Queen"><label for="Queen">Queen</label>
 			<input type="radio" name="roomType" value = "Double Queen"><label for="Double Queen">Double Queen</label>
 			<input type="radio" name="roomType" value = "King"><label for="King">King</label>
 		</td></tr>
 		<tr><td><input type="submit" value="Reserve" name="submit"></td></tr>
 		</table>
-		
+		<% } else {%>
+		<p style="color: red;">Please sign in</p>
+		<%} %>
 	</form>
 </div>
 </body>

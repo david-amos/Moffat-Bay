@@ -1,7 +1,10 @@
 package beans;
 
 import java.time.LocalDateTime;
-
+/* Moffat Bay Lodge Reservation Bean
+ * Team Charlie: David Amos, Scott Cacal, Caitlan Nichols, Alexander Zayas 
+ * This is an object class to store reservation info
+ */
 public class Reservation {
 	String userEmail;
 	String addressLine1;

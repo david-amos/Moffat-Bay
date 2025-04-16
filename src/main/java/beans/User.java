@@ -1,7 +1,10 @@
 package beans;
 
 import java.util.Date;
-
+/* Moffat Bay Lodge User Bean
+ * Team Charlie: David Amos, Scott Cacal, Caitlan Nichols, Alexander Zayas 
+ * This is an object class to store user info
+ */
 public class User {
 	private String UserEmail;
 	private String FirstName;
