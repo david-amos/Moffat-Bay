@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%-- Moffat Bay About
+Team Charlie: David Amos, Scott Cacal, Caitlan Nichols, Alexander Zayas
+This file handles the display of the about page --%>
   <title>About Us – Moffat Bay Lodge</title>
   <link rel="stylesheet" type="text/css" href="./css/about.css">
 </head>

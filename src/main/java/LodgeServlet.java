@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import beans.User;
 import beans.Reservation;
+import beans.Room;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,6 +19,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import javax.crypto.Cipher;
@@ -27,6 +29,13 @@ import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+/* Moffat Bay Lodge Servlet
+ * Team Charlie: David Amos, Scott Cacal, Caitlan Nichols, Alexander Zayas 
+ * This file controls the backend code of the application
+ * The doPost method controls the actions on a form submission
+ * 
+ */
 
 @WebServlet("/LodgeServlet")
 public class LodgeServlet extends HttpServlet {
@@ -51,8 +60,12 @@ public class LodgeServlet extends HttpServlet {
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		ServletContext sc = getServletContext();
+        // reroute to landing when at first load
+        RequestDispatcher rd = sc.getRequestDispatcher("/Landing.jsp");
+        rd.forward(request, response);
 	}
-
+	// Handles form submissions
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log("in doPost");
 		HttpSession session = request.getSession(true);
@@ -182,12 +195,34 @@ public class LodgeServlet extends HttpServlet {
 					}
 					LocalDateTime arrivalDateTime = LocalDateTime.parse(request.getParameter("arrivalDateTime"),DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
 					LocalDateTime departureDateTime = LocalDateTime.parse(request.getParameter("departureDateTime"),DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+					long daysDifference = ChronoUnit.DAYS.between(arrivalDateTime.toLocalDate(), departureDateTime.toLocalDate());
+					if (daysDifference < 1 ) {
+						throw new Exception("Departure date must be a least one day after arrival");
+					}
 					User user = (User)session.getAttribute("User");
 					int numAdults = Integer.parseInt(request.getParameter("numAdults"));
 					int numChildren = Integer.parseInt(request.getParameter("numChildren"));
-					Reservation reservation = new Reservation(user.getUserEmail(),request.getParameter("addressLine1"),request.getParameter("addresLine2"),request.getParameter("addressCity"),
+					Reservation reservation = new Reservation(user.getUserEmail(),request.getParameter("addressLine1"),request.getParameter("addressLine2"),request.getParameter("addressCity"),
 							request.getParameter("addressState"),request.getParameter("addressZip"),arrivalDateTime,departureDateTime,numAdults,numChildren, roomTypeID);
 					session.setAttribute("Reservation", reservation);
+					String sql = "SELECT * FROM TESTMOFFATBAYDB.ROOM WHERE RoomTypeID =?";
+					Connection connection = null;  //mysql connection
+					PreparedStatement statement = null;   //mysql statement
+					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "test_user", "testPW");
+		            statement = connection.prepareStatement(sql,ResultSet.TYPE_SCROLL_SENSITIVE, 
+	                        ResultSet.CONCUR_UPDATABLE);
+		            statement.setString(1,roomTypeID+"");
+		            ResultSet rs = statement.executeQuery();
+		            rs.last();                              //move the cursor to the last row
+		            int numberOfRows = rs.getRow();         //get the number of rows
+		            rs.beforeFirst();                       //back to initial state
+		            if (numberOfRows > 0);
+		            	else { throw new Exception("SQL error");}
+		            log("User Signed In");
+		            rs.next();
+		            Room room = new Room(roomTypeID, rs.getString(2),rs.getDouble(3));
+		            //store room information in session for reservation summary page
+		            session.setAttribute("Room", room);
 					log("Reserve submitted, not yet confirmed");
 					ServletContext sc = getServletContext();
 					RequestDispatcher rd = sc.getRequestDispatcher("/Summary.jsp");
@@ -195,7 +230,7 @@ public class LodgeServlet extends HttpServlet {
 				}
 				catch(Exception e) {
 					log(e.getMessage());
-					request.setAttribute("reservationError", "Please try again");
+					request.setAttribute("reservationError", e.getMessage());
 					ServletContext sc = getServletContext();
 					RequestDispatcher rd = sc.getRequestDispatcher("/Reservations.jsp");
 					log("Something went wrong");
@@ -229,13 +264,13 @@ public class LodgeServlet extends HttpServlet {
 					int numAdults = reservation.getNumAdults();
 					int numChildren = reservation.getNumChildren();
 					int roomTypeID = reservation.getRoomTypeID();
-					int reservationID = 5;
 					String error = null;
 							
 					Connection connection = null;
 					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "test_user", "testPW");
 		            Statement statement = connection.createStatement();
-		            String query = "INSERT INTO TESTMOFFATBAYDB.RESERVATION VALUES ('"+reservationID+"','"+userEmail+"','"+address1+"','"+
+		            String query = "INSERT INTO TESTMOFFATBAYDB.RESERVATION (UserEmail, AddressLine1, AddressLine2, AddressCity, AddressState, AddressZip,"
+		            		+ " ArrivalDateTime, DepartureDateTime, NumAdults, NumChildren, RoomTypeID) VALUES ('"+userEmail+"','"+address1+"','"+
 		            address2+"','"+city+"','"+state+"','"+zip+"','"+arrival+"','"+departure+"','"+numAdults+"','"+numChildren+"','"+roomTypeID+"');";
 		            int sqlCode = statement.executeUpdate(query);
 		            connection.close();
