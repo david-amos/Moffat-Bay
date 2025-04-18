@@ -58,6 +58,7 @@ This is a jsp page to handle the display of the page --%>
 			<input type="radio" name="roomType" value = "Double Queen"><label for="Double Queen">Double Queen</label>
 			<input type="radio" name="roomType" value = "King"><label for="King">King</label>
 		</td></tr>
+		<tr><td colspan="2"><p>Room size: double full beds = 126.00 per night, queen = 141.75 per night, double queen beds = 157.50 per night, and king = 168.00 per night.</p></td></tr>
 		<tr><td><input type="submit" value="Reserve" name="submit"></td></tr>
 		</table>
 		<% } else {%>
