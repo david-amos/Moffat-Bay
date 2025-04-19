@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%-- Moffat Bay Lodge Reservation Page
+<%-- Moffat Bay Lodge Reservation Summary Page
 Team Charlie: David Amos, Scott Cacal, Caitlan Nichols, Alexander Zayas
 This is a jsp page to handle the display of the page --%>
 <%@ page import="beans.User" %>
