@@ -1,3 +1,7 @@
+/* Moffat Bay Lodge about css
+ * Team Charlie: David Amos, Scott Cacal, Caitlan Nichols, Alexander Zayas 
+ * This file provides formatting specific to the about page
+ */
 .about-hero {
     display: flex;
     justify-content: space-between;
