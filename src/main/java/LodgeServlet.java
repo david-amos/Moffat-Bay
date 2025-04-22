@@ -24,6 +24,8 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.time.LocalDateTime;
@@ -236,7 +238,6 @@ public class LodgeServlet extends HttpServlet {
 					log("Something went wrong");
 			        rd.forward(request, response);
 				}
-				//to-do			
 			}
 		}
 		if (submitValue != null) {
@@ -295,10 +296,55 @@ public class LodgeServlet extends HttpServlet {
 			}
 		}
 		if (submitValue != null) {
+			if (submitValue.equals("Search")){
+				try {
+					String sql = "SELECT * FROM TESTMOFFATBAYDB.RESERVATION WHERE UserEmail=? OR ReservationID=?";  //SQL
+					String searchText = request.getParameter("searchText");
+					Connection connection = null;  //mysql connection
+					PreparedStatement statement = null;   //mysql statement
+					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "test_user", "testPW");
+		            statement = connection.prepareStatement(sql,ResultSet.TYPE_SCROLL_SENSITIVE, 
+	                        ResultSet.CONCUR_UPDATABLE);
+		            statement.setString(1,searchText);
+		            statement.setString(2,searchText);
+		            ResultSet rs = statement.executeQuery();
+		            rs.last();                              //move the cursor to the last row
+		            int numberOfRows = rs.getRow();         //get the number of rows
+		            rs.beforeFirst();                       //back to initial state
+		            if (numberOfRows > 0);
+		            	else { throw new Exception("SQL error");}
+		            log("Search Query successfuly");
+		            ArrayList<Reservation> reservations = new ArrayList<Reservation>();
+		            while(rs.next()){
+		            	reservations.add(new Reservation(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),
+		            			rs.getTimestamp(8).toLocalDateTime(),rs.getTimestamp(9).toLocalDateTime(),rs.getInt(10),rs.getInt(11),rs.getInt(12)));
+		            }
+		            
+		            session.setAttribute("searchResults", reservations);
+		            log("search results stored to session");
+		            log(reservations.toString());
+		            ServletContext sc = getServletContext();
+			        RequestDispatcher rd = sc.getRequestDispatcher("/Lookup.jsp");
+			        rd.forward(request, response);	
+					
+				}
+				catch(Exception e) {
+					log(e.getMessage());
+					request.setAttribute("searchError", "No results found");
+					session.setAttribute("searchResults", null);
+					ServletContext sc = getServletContext();
+					RequestDispatcher rd = sc.getRequestDispatcher("/Lookup.jsp");
+					log("Something went wrong");
+			        rd.forward(request, response);
+				}
+			}
+			}
+		if (submitValue != null) {
 			if (submitValue.equals("Logout")){	
 				session.setAttribute("User",null);
 				ServletContext sc = getServletContext();
 				RequestDispatcher rd = sc.getRequestDispatcher("/Login.jsp");
+				rd.forward(request, response);
 			}
 		}		
 	}
