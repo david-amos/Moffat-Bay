@@ -1,0 +1,59 @@
+/* Layout container */
+.lookup-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading */
+  .lookup-container h3 {
+    font-size: 28px;
+    color: #014421;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Input field */
+  .lookup-container input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Search button */
+  .lookup-container input[type="submit"] {
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: #014421;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .lookup-container input[type="submit"]:hover {
+    background-color: #026c3c;
+  }
+  
+  /* Reservation result block */
+  .reservation-entry {
+    background-color: #f4f4f4;
+    border-left: 4px solid #014421;
+    padding: 15px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    line-height: 1.6;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Error messages */
+  .lookup-container p[style*="color: red"] {
+    font-weight: bold;
+    margin-top: 15px;
+    text-align: center;
+  }
