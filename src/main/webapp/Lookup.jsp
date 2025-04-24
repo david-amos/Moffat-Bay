@@ -49,7 +49,22 @@ This file handles the display of the lookup page --%>
             ${item.departureDateTime} <br> 
             ${item.numAdults} Adult(s)<br> 
             ${item.numChildren} Children<br> 
-            Room Type ID: ${item.roomTypeID}
+            Room Type: 
+            <c:choose>
+            	<c:when test ="${item.roomTypeID==1}"><br>
+            	Double Full Beds
+            	</c:when>
+            	<c:when test ="${item.roomTypeID==2}"><br>
+            	Queen Bed
+            	</c:when>
+            	<c:when test ="${item.roomTypeID==3}"><br>
+            	Double Queen Beds
+            	</c:when>
+            	<c:when test ="${item.roomTypeID==4}"><br>
+            	King Bed
+            	</c:when>
+            </c:choose>
+            
         </div>
     </c:forEach>
 
