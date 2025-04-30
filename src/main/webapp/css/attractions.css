@@ -1,0 +1,112 @@
+.attractions-container {
+    padding: 40px 60px;
+    color: white;
+    background-color: #014421;
+    font-family: Arial, sans-serif;
+  }
+  
+  .attractions-header {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  .adventure-hero {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+    align-items: center;
+  }
+  
+  .adventure-hero img {
+    border-radius: 8px;
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+  }
+  
+  .hero-text {
+    flex: 1;
+  }
+  
+  .hero-text h3 {
+    font-family: "Brush Script MT", cursive;
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .hero-text p {
+    font-size: 16px;
+  }
+  
+  .reserve-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #8b4b2b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .reserve-btn:hover {
+    background-color: #a65533;
+  }
+  
+  .activities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 20px;
+  }
+  
+  .activity {
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .activity img {
+    max-width: 100%;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    height: auto;
+  }
+  
+  .activity p {
+    font-size: 14px;
+  }
+  
+  /* Responsive Design for Mobile and Tablets*/
+  @media (max-width: 768px) {
+    .adventure-hero {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .adventure-hero img {
+      max-width: 100%;
+    }
+  
+    .hero-text {
+      padding-top: 20px;
+    }
+  
+    .reserve-btn {
+      width: 100%;
+      margin-top: 20px;
+    }
+  
+    .activities-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .activity {
+      padding: 20px;
+    }
+  }
