@@ -10,30 +10,42 @@ This is a jsp page to handle the display of the attractions page --%>
 <meta charset="UTF-8">
 <title>Moffat Bay - Attractions</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="/Moffat-Bay/css/style.css">
+<link rel="stylesheet" type="text/css" href="/Moffat-Bay/css/attractions.css">
 </head>
 <body>
-<div style="float: left; margin-left: 10%; margin-right: 10%; margin-bottom: 10%; border: 2px solid grey; background-color: #fff;">
-	<h3>Attractions</h3>
-	<div style="float: left">
-		<img src="images/MoffatBayLodge.png" alt="Lodge at Moffat Bay" style="max-height:200px;">
-		<h4>Island Adventures Await</h4>
-		<p>
-		Bring the Family and Explore the Wonders of Joviedsa Island.
-		Plan your next adventure at Moffat Bay Lodge Today!
-		</p>
-		<a href="Reservations.jsp">Reserve a room now</a>
+	<div class="attractions-container">
+		<div class="attractions-header">Moffat Bay Attractions</div>
+	
+		<div class="adventure-hero">
+			<img src="images/MoffatBayLodge.png" alt="Lodge at Moffat Bay">
+			<div class="hero-text">
+				<h3>Island Adventures Await</h3>
+				<p>
+					Bring the Family and Explore the Wonders of Joviedsa Island.<br>
+					Plan your next adventure at Moffat Bay Lodge Today!
+				</p>
+				<a href="Reservations.jsp"><button class="reserve-btn">Reserve a Room now</button></a>
+			</div>
+		</div>
+	
+		<div class="activities-grid">
+			<div class="activity">
+				<img src="images/hiking.png" alt="Hiking">
+				<p>Discover miles of forest trails with breathtaking views of the coastline and wildlife habitats. Guided and solo hikes available.</p>
+			</div>
+			<div class="activity">
+				<img src="images/kayaking.png" alt="Kayaking">
+				<p>Paddle through the serene waters of Moffat Bay. Rentals and tours offered daily for all skill levels.</p>
+			</div>
+			<div class="activity">
+				<img src="images/whale-watching.png" alt="Whale Watching">
+				<p>Experience orca sightings up close with our partner tour guides. Best viewing times: May–September.</p>
+			</div>
+			<div class="activity">
+				<img src="images/SCUBA.png" alt="SCUBA diving">
+				<p>Explore underwater reefs and marine life in the pristine waters off the island. Equipment rentals and certified instructors available.</p>
+			</div>
+		</div>
 	</div>
-	<div style="float: right">
-		<img src="images/hiking.png" alt="Hiking" style="max-height:200px;">
-		<p>Discover miles of forest trails with breathtaking views of the coastline and wildlife habitats. Guided and solo hikes available.</p>
-		<img src="images/kayaking.png" alt="Kayaking" style="max-height:200px;">
-		<p>Paddle through the serene waters of Moffat Bay. Rentals and tours offered daily for all skill levels.</p>
-		<img src="images/whale-watching.png" alt="Whale Watching" style="max-height:200px;">
-		<p>Experience orca sightings up close with our partner tour guides. Best viewing times: May–September.</p>
-		<img src="images/SCUBA.png" alt="SCUBA diving" style="max-height:200px;">
-		<p>Explore underwater reefs and marine life in the pristine waters off the island. Equipment rentals and certified instructors available.</p>
-	</div>
-</div>
-</body>
+	</body>
 </html>
