@@ -14,24 +14,25 @@ This file handles the display of the landing page --%>
 
   <div class="hero-image">
     <img src="images/MoffatBayLodge.png" alt="Lodge at Moffat Bay" style="max-height:400px; display: block; margin-left: auto; margin-right: auto;">
-    <h1 class="hero-text">Discover Tranquility</h1>
-    <img src="images/salish_salmon_clean_transparent.png" alt="Lodge at Moffat Bay" style="max-height:100px;">
+    <h1 class="hero-text" align="center">Discover Tranquility </h1>
+    <img src="images/salish_salmon_clean_transparent.png" alt="Lodge at Moffat Bay" style="max-height:100px; display: block; margin-left: auto; margin-right: auto;">
   </div>
+  
 
-  <div class="info-section">
+  <div class="info-section" style="padding-top: 50px;">
     <div class="info-card">
       <h2>Relaxation</h2>
       <p>Moffat Bay is a great place to stay with state of the art comfort.</p>
       <a href="About.jsp"><button>About Us</button></a>
     </div>
 
-    <div class="info-card">
+    <div class="info-card" style="padding-top: 50px;">
       <h2>Attractions</h2>
       <p>Moffat Bay offers lots of great activities to enjoy during your stay.<br>Hiking, kayaking, whale watching, scuba diving, and more!</p>
       <a href="Attractions.jsp"><button>Attractions</button></a>
     </div>
 
-    <div class="info-card">
+    <div class="info-card" style="padding-top: 50px;">
       <h2>Book Your Stay</h2>
       <p>Get started today and register for a free account!</p>
       <a href="UserRegistration.jsp"><button>Register</button></a>

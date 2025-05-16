@@ -15,8 +15,8 @@ This will be used as a common header for jsp pages --%>
     <a href="Attractions.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Attractions</a>
     <a href="UserRegistration.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Register</a>
     <%if (session.getAttribute("User") != null){ %>
-    <a href="Reservations.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Reservations</a>
-    <a href="Lookup.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Look Up</a>
+    <a href="Reservations.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Guest Reservations</a>
+    <a href="Lookup.jsp" style="margin: 0 10px; color: white; text-decoration: none;">Reservation Look Up</a>
     <%} %>
   </nav>
 </div>

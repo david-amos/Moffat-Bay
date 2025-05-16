@@ -64,7 +64,7 @@ This is a jsp page to handle the display of the page --%>
 		<tr><td><p><strong>Total: <%= totalFormatted %></strong></p></td></tr>
 		
 
-		<tr><td><a href="Reservations.jsp" style="margin: 0 10px; color: black; border: 1px solid black; padding: 5px; text-decoration: none;"> &#x2190; Make Changes</a></td><td><input type="submit" value="MakeReservation" name="submit"></td></tr>
+		<tr><td><a href="Reservations.jsp" style="margin: 0 10px; color: black; border: 1px solid black; padding: 5px; text-decoration: none;"> &#x2190; Make Changes</a></td><td><input type="submit" value="Make Reservation" name="submit"></td></tr>
 		</table>
 		<% } else {%>
 		<p style="color: red;">Please sign in</p>
