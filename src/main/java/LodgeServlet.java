@@ -199,7 +199,7 @@ public class LodgeServlet extends HttpServlet {
 					LocalDateTime departureDateTime = LocalDateTime.parse(request.getParameter("departureDateTime"),DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
 					long daysDifference = ChronoUnit.DAYS.between(arrivalDateTime.toLocalDate(), departureDateTime.toLocalDate());
 					if (daysDifference < 1 ) {
-						throw new Exception("Departure date must be a least one day after arrival");
+						throw new Exception("Departure date must be at least one day after arrival");
 					}
 					User user = (User)session.getAttribute("User");
 					int numAdults = Integer.parseInt(request.getParameter("numAdults"));
