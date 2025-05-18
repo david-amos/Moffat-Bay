@@ -248,7 +248,7 @@ public class LodgeServlet extends HttpServlet {
 			}
 		}
 		if (submitValue != null) {
-			if (submitValue.equals("MakeReservation")){	
+			if (submitValue.equals("Make Reservation")){	
 				try {
 					if (request.getSession().getAttribute("User") == null) {
 						throw new Exception("Please sign in before booking");
