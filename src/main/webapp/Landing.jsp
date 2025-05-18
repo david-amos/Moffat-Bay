@@ -13,9 +13,9 @@ This file handles the display of the landing page --%>
 <body>
 
   <div class="hero-image">
-    <img src="images/MoffatBayLodge.png" alt="Lodge at Moffat Bay" style="max-height:400px; display: block; margin-left: auto; margin-right: auto;">
-    <h1 class="hero-text" align="center">Discover Tranquility </h1>
-    <img src="images/salish_salmon_clean_transparent.png" alt="Lodge at Moffat Bay" style="max-height:100px; display: block; margin-left: auto; margin-right: auto;">
+    <img src="images/MoffatBayLodgeAI.png" alt="Lodge at Moffat Bay" style="max-height:400px; display: block; margin-left: auto; margin-right: auto;">
+    <h1 class="hero-text" align="center">
+   </h1>
   </div>
   
 
